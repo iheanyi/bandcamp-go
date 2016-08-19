@@ -5,7 +5,6 @@ import (
   "net/http"
   "log"
   "strings"
-  //"io"
   "os"
   "github.com/robertkrimen/otto"
   "github.com/PuerkitoBio/goquery"
@@ -13,13 +12,16 @@ import (
 
 func executeCode(jsCode string) {
   /*
-  
+   Executes arbitrary JavaScript within the Bandcamp page.
   */
   fmt.Println(jsCode)
+  fullCodeBlock := "albumData = " + jsCode
+  fmt.Println(fullCodeBlock)
+
   vm := otto.New()
-  vm.Run(jsCode);
+  vm.Run(fullCodeBlock);
   vm.Run(`
-    console.log(TralbumData);
+    console.log(albumData.stringify());
   `)
 }
 
