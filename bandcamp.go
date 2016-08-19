@@ -6,13 +6,31 @@ import (
   "log"
   "strings"
   "os"
+  "encoding/json"
   "github.com/robertkrimen/otto"
   "github.com/PuerkitoBio/goquery"
 )
 
+// Struct for trAlbumData variable
+type AlbumData struct {
+  artFullsizeUrl string
+  trackinfo []string
+}
+
+// Struct for BandData variable
+type BandData struct {
+  name string
+}
+
+// Struct for EmbedData variable
+type EmbedData struct {
+  albumTitle string
+  albumEmbedData string
+}
+
 func executeCode(jsCode string) {
   /*
-   Executes arbitrary JavaScript within the Bandcamp page.
+  Executes arbitrary JavaScript within the Bandcamp page.
   */
   fmt.Println(jsCode)
   fullCodeBlock := "albumData = " + jsCode
@@ -21,8 +39,20 @@ func executeCode(jsCode string) {
   vm := otto.New()
   vm.Run(fullCodeBlock);
   vm.Run(`
-    console.log(albumData.stringify());
+  console.log(albumData.stringify());
   `)
+
+  /* TO-DO: Fix Decoding of JSON from Otto VM into an actual Go structure. 
+  Mad close to getting in working though. */
+  if value, err := vm.Get("albumData"); err == nil {
+    if valueStr, err := value.ToString(); err == nil {
+      dec := json.NewDecoder(strings.NewReader(valueStr))
+      fmt.Println(dec)
+    }
+  } else {
+    log.Fatal("Error occurred!")
+    log.Fatal(err)
+  }
 }
 
 func fetchPage() {
