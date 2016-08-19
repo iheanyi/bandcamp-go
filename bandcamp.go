@@ -6,7 +6,7 @@ import (
   "log"
   "strings"
   "os"
-  //"encoding/json"
+  "encoding/json"
   "github.com/robertkrimen/otto"
   "github.com/PuerkitoBio/goquery"
 )
@@ -43,9 +43,10 @@ func ExecuteCode(jsCode string) {
   /* TO-DO: Fix Decoding of JSON from Otto VM into an actual Go structure. 
   Mad close to getting in working though. */
   if value, err := vm.Get("albumData"); err == nil {
-    /*if valueStr, err := value.ToString(); err == nil {
+    if valueStr, err := value.ToString(); err == nil {
       dec := json.NewDecoder(strings.NewReader(valueStr))
-    }*/
+      fmt.Println(dec)
+    }
   }
 }
 
