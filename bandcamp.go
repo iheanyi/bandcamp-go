@@ -28,7 +28,7 @@ type EmbedData struct {
   albumEmbedData string
 }
 
-func executeCode(jsCode string) {
+func ExecuteCode(jsCode string) {
   /*
   Executes arbitrary JavaScript within the Bandcamp page.
   */
@@ -55,9 +55,7 @@ func executeCode(jsCode string) {
   }
 }
 
-func fetchPage() {
-  url := os.Args[1]
-
+func FetchPage(url string) {
   fmt.Println("Here's the URL that we'll be parsing:", url)
   resp, err := http.Get(os.Args[1])
 
@@ -73,7 +71,7 @@ func fetchPage() {
       albumDataDef  := strings.Split(nodeText, "var TralbumData = ")[1]
       albumData := strings.Split(albumDataDef, ";")[0]
 
-      executeCode(albumData)
+      ExecuteCode(albumData)
     }
   })
 
@@ -81,5 +79,6 @@ func fetchPage() {
 }
 
 func main() {
-  fetchPage();
+  albumUrl := os.Args[1]
+  FetchPage(albumUrl);
 }
