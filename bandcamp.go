@@ -12,24 +12,6 @@ import (
   "github.com/PuerkitoBio/goquery"
 )
 
-// Struct for trAlbumData variable
-type AlbumData struct {
-  artFullsizeUrl string
-  trackinfo []string
-}
-
-// Struct for BandData variable
-type BandData struct {
-  name string
-}
-
-// Struct for EmbedData variable
-type EmbedData struct {
-  albumTitle string
-  albumEmbedData string
-}
-
-var albumMap map[string]interface{}
 
 func GenerateAlbumMap(jsCode string) map[string]interface{} {
   /*
@@ -44,8 +26,8 @@ func GenerateAlbumMap(jsCode string) map[string]interface{} {
   albumDataStr = JSON.stringify(albumData);
   `)
 
-  /* TO-DO: Fix Decoding of JSON from Otto VM into an actual Go structure. 
-  Mad close to getting in working though. */
+  var albumMap map[string]interface{}
+
   if value, err := vm.Get("albumDataStr"); err == nil {
     if valueStr, err := value.ToString(); err == nil {
       jsonByteArray := []byte(valueStr)
@@ -61,7 +43,7 @@ func GenerateAlbumMap(jsCode string) map[string]interface{} {
   return albumMap
 }
 
-func FetchPage(url string) {
+func DownloadAlbum(url string) {
   fmt.Println("Here's the URL that we'll be parsing: ", url)
   resp, err := http.Get(os.Args[1])
 
@@ -133,5 +115,5 @@ func DownloadAlbumTracks(albumInfo map[string]interface{}) {
 
 func main() {
   albumUrl := os.Args[1]
-  FetchPage(albumUrl)
+  DownloadAlbum(albumUrl)
 }
