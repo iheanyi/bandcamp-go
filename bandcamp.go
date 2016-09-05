@@ -33,19 +33,26 @@ func ExecuteCode(jsCode string) {
   Executes arbitrary JavaScript within the Bandcamp page.
   */
   fullCodeBlock := "albumData = " + jsCode
+  fmt.Println(jsCode)
 
   vm := otto.New()
   vm.Run(fullCodeBlock);
   vm.Run(`
-  console.log(albumData.stringify());
+  albumDataStr = JSON.stringify(albumData);
   `)
 
   /* TO-DO: Fix Decoding of JSON from Otto VM into an actual Go structure. 
   Mad close to getting in working though. */
-  if value, err := vm.Get("albumData"); err == nil {
+  if value, err := vm.Get("albumDataStr"); err == nil {
+    fmt.Println("This will be decoding.");
+    //fmt.Println(value.ToString())
     if valueStr, err := value.ToString(); err == nil {
-      dec := json.NewDecoder(strings.NewReader(valueStr))
-      fmt.Println(dec)
+      jsonByteArray := []byte(valueStr)
+      var albumMap interface{}
+      jsonErr := json.Unmarshal(jsonByteArray, &albumMap)
+      if (jsonErr == nil) {
+        fmt.Println(albumMap)
+      }
     }
   }
 }
