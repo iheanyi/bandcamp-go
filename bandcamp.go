@@ -12,7 +12,6 @@ import (
   "github.com/PuerkitoBio/goquery"
 )
 
-
 func GenerateAlbumMap(jsCode string) map[string]interface{} {
   /*
   Executes arbitrary JavaScript within the Bandcamp page.
