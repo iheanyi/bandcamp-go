@@ -108,6 +108,8 @@ func DownloadAlbumTracks(albumInfo map[string]interface{}) {
     if downloadErr != nil {
       fmt.Println("Error downloading the file.")
       panic(downloadErr)
+    } else {
+      fmt.Println("Successfuly downloaded file", track["title"], "to", trackFileName)
     }
   }
 }
